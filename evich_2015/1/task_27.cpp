@@ -1,3 +1,5 @@
+// 1st variant -- task 27
+
 #include <iostream>
 #include <string>
 
@@ -5,11 +7,12 @@ int main() {
     const int   AUTHOR_LIMIT = 20,
                 YEAR_LIMIT   = 1980,
                 PAGES_LIMIT  = 300;
-          int   N,
+          int   N, // by condition: the number of books
                 bookYear,
                 bookPages,
                 suitableBooks = 0;
-    size_t      shortestNameLength = 3000; 
+    size_t      shortestNameLength = 0;
+              --shortestNameLength; // to get MAX_VALUE in used implementation
     std::string bookName = "",
                 shortestNameString = "";
     
