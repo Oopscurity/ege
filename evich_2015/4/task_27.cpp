@@ -1,16 +1,16 @@
 #include <iostream>
 
 int main() {
-	const int DIVISOR = 14,
-			  DIVISOR_FIRST_FACT = 2,
-			  DIVISOR_SEC_FACT = 7;
-		  int current,
-		  	  maxNumber = 0,
-		  	  maxDivToSelf = 0, // divided to DIVISOR itself
-		  	  maxDivToFirstFactor = 0,
-		  	  maxDivToSecondFactor = 0;
-		 long N, // by condition: all numbers
-			  maxDivToSelfIndex = 0;
+	const int DIVISOR              = 14,
+		  DIVISOR_FIRST_FACT   = 2,
+		  DIVISOR_SEC_FACT     = 7;
+	      int current,
+		  maxNumber            = 0,
+		  maxDivToSelf         = 0, // divided to DIVISOR itself
+		  maxDivToFirstFactor  = 0,
+		  maxDivToSecondFactor = 0;
+	     long N, // by condition: all numbers
+		  maxDivToSelfIndex    = 0;
 
 	std::cin >> N;
 	for (int i = 0; i < N; ++i) {
@@ -33,9 +33,9 @@ int main() {
 	}
 
 	long possibleByFactors,
-		 possibleByMultiply,
-		 declControlValue, // declared, R by condition
-		 trueControlValue = 0; // countable; at least zero
+	     possibleByMultiply,
+	     declControlValue, // declared, R by condition
+	     trueControlValue = 0; // countable; at least zero
 
 	possibleByFactors = maxDivToFirstFactor * maxDivToSecondFactor;
 	possibleByMultiply = maxDivToSelf * maxNumber;
