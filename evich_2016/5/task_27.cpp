@@ -39,7 +39,7 @@ int main() {
             minimals.clear();
             minimals.push_back(current);
             minAverage = currentAverage;
-        } else {
+        } else { // currentAverage == minAverage
             minimals.push_back(current);
         }
     }
