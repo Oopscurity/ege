@@ -7,7 +7,7 @@ int main() {
               PAGE_LIMIT = 400,
               AUTHOR_NAME_LIMIT = 20,
               BOOK_NAME_LIMIT = 40;
-          int N; // by condition: the number of books
+    int N; // by condition: the number of books
     std::cin >> N;
     if (N <= 0) {
         return -1;
