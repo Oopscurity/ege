@@ -19,12 +19,12 @@ int main() {
         return -1;
     }
 
-    int minRateSum = MAX_RATE * EXAMS_NUM + 1,
+    int maxRateSum = -1,
         currentRate,
         currentRateSum;
 
     Name current;
-    std::vector<Name> worst;
+    std::vector<Name> best;
     for (int i = 0; i < N; ++i) {
         currentRateSum = 0;
         std::getline(std::cin, current.surname, ' ');
@@ -35,20 +35,20 @@ int main() {
             currentRateSum += currentRate;
         }
 
-        if (currentRateSum > minRateSum)
+        if (currentRateSum < maxRateSum)
             continue;
 
-        if (currentRateSum < minRateSum) {
-            worst.clear();
-            worst.push_back(current);
-            minRateSum = currentRateSum;
-        } else { // currentRateSum == minRateSum
-            worst.push_back(current);
+        if (currentRateSum > maxRateSum) {
+            best.clear();
+            best.push_back(current);
+            maxRateSum = currentRateSum;
+        } else { // currentRateSum == maxRateSum
+            best.push_back(current);
         }
     }
 
-    for (auto it = worst.begin(); it != worst.end(); ++it) {
-        std::cout << it->surname << ' ' << it->initials << ' ' << minRateSum / EXAMS_NUM; // probably '\n' is required
+    for (auto it = best.begin(); it != best.end(); ++it) {
+        std::cout << it->surname << ' ' << it->initials << ' ' << maxRateSum; // probably '\n' is required
     }
     return 0;
 }
