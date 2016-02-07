@@ -10,8 +10,7 @@ struct routeInfo {
 };
 
 int main() {
-    const int MINS_PER_HOUR = 60,
-              MAX_DELAY = 2;
+    const int MAX_DELAY = 2;
 
     int N; // by condition: the number of routes
     std::cin >> N;
