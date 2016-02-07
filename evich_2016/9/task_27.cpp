@@ -36,7 +36,7 @@ int main() {
         debtors.insert(std::pair<int, double>(currentFlatNum, currentDebt));
     }
 
-    if (!equalsMax) {
+    if (equalsMax != debtors.size() - 1) {
         for (auto &debtor: debtors) {
             if (debtor.second > maxDebt * MIN_DEBT_RATE) {
                 std::cout << debtor.first << '\n';
@@ -49,7 +49,7 @@ int main() {
             if (++printed > equalsMax * EQ_SELECTION_RATE / 100) {
                 break;
             }
-            
+
             std::cout << debtor.first << '\n';
         }
     }
