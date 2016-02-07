@@ -47,10 +47,8 @@ int main() {
         arrivalTimeLimit = route.latest + route.delay + MAX_DELAY;
         route.latest = arrivalTime;
 
-        if (arrivalTime > arrivalTimeLimit) {
-            for (int i = 1; arrivalTime >= arrivalTimeLimit + i; ++i) {
-                ++route.penalty;
-            }
+        while (arrivalTime >= ++arrivalTimeLimit) {
+            ++route.penalty;
         }
     }
 
