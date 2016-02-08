@@ -8,7 +8,8 @@ struct price {
 
 int main() {
     const int MAX_COMPANY_NAME_SIZE = 20,
-              MAX_SHOP_NAME_SIZE = 20;
+              MAX_SHOP_NAME_SIZE = 20,
+              MIN_POSSIBLE_PRICE = 2000;
     int N; // by condition: the number of proposals
     std::cin >> N;
     if (N <= 0) {
@@ -28,18 +29,19 @@ int main() {
         std::cin >> currentPrice;
 
         current = &categories[currentCategory];
-        if (currentPrice > current->maxPrice) {
+        if ((currentPrice >= MIN_POSSIBLE_PRICE) && (currentPrice > current->maxPrice)) {
             current->maxPrice = currentPrice;
             current->where = 1;
         } else if (currentPrice == current->maxPrice) {
             ++current->where;
         }
     }
+    delete current;
 
     // not (auto x: y) because of the order (the last inserted is in the begin)
     // TODO: to set correct order without using char literals
-    for (char current = 'A'; current <= 'D'; ++current) {
-        std::cout << categories[current].where << ' ';
+    for (char c = 'A'; c <= 'D'; ++c) {
+        std::cout << categories[c].where << ' ';
     }
     return 0;
 }
