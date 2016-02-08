@@ -2,9 +2,9 @@
 #include <map> // to be sorted
 
 int main() {
-    const double MIN_DEBT_RATE = 0.8;
-    const int EQ_SELECTION_RATE = 60,
-              MAX_SURNAME_SIZE = 20,
+    const double MIN_DEBT_RATE = 0.8,
+                 EQ_SELECTION_RATE = 0.6;
+    const int MAX_SURNAME_SIZE = 20,
               MAX_NAME_SIZE = 15;
     int N; // by condition: the number of flats
     std::cin >> N;
@@ -12,10 +12,10 @@ int main() {
         return -1;
     }
 
-    int currentFlatNum,
-        equalsMax = 0;
+    int currentFlatNum;
     double currentDebt,
-           maxDebt = 0.0;
+           maxDebt = 0,
+           allDebt = 0;
     std::map<int, double> debtors;
     for (int i = 0; i < N; ++i) {
         std::cin.ignore(MAX_SURNAME_SIZE, ' ');
@@ -29,24 +29,24 @@ int main() {
 
         if (currentDebt > maxDebt) {
             maxDebt = currentDebt;
-            equalsMax = 0;
-        } else if (currentDebt == maxDebt) {
-            ++equalsMax;
         }
+
+        allDebt += currentDebt;
         debtors.insert(std::pair<int, double>(currentFlatNum, currentDebt));
     }
 
-    if (equalsMax != debtors.size() - 1) {
+    double averageDebt = allDebt / debtors.size();
+    if (averageDebt < maxDebt) {
         for (auto &debtor: debtors) {
             if (debtor.second > maxDebt * MIN_DEBT_RATE) {
                 std::cout << debtor.first << '\n';
             }
         }
-    } else if (equalsMax == debtors.size() - 1) {
+    } else if (averageDebt == maxDebt) {
         int printed = 0;
 
         for (auto &debtor: debtors) {
-            if (++printed > equalsMax * EQ_SELECTION_RATE / 100) {
+            if (++printed > debtors.size() * EQ_SELECTION_RATE) {
                 break;
             }
 
