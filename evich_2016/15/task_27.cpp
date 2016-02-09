@@ -9,12 +9,12 @@ int main() {
         return -1;
     }
 
-    int actionsDone = 0;
+    long actionsDone = 0;
     char currentAction;
     double currentPrice,
            allSpent = 0,
            averagePrice = 0;
-    for (int i = 0; i < N; ++i) {
+    for (long i = 0; i < N; ++i) {
         std::cin.ignore(PROPOSAL_NAME_LIMIT, ' ');
         std::cin >> currentAction;
         std::cin >> currentPrice;
