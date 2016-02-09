@@ -3,7 +3,7 @@
 int main() {
     const int PRICE_LIMIT = 240,
               PROPOSAL_NAME_LIMIT = 4;
-    int N; // by condition: the number of proposals
+    long N; // by condition: the number of proposals
     std::cin >> N;
     if (N <= 0) {
         return -1;
