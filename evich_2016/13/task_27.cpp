@@ -10,7 +10,7 @@ int main() {
         return -1;
     }
 
-    const int step = 26;
+    const int CIPHER_STEP = 26;
     const std::string INPUT_FILE_NAME = "message.txt";
     std::fstream fin (INPUT_FILE_NAME, std::fstream::in);
     if (!fin.is_open()) {
@@ -23,7 +23,9 @@ int main() {
     std::string result;
     while(fin.get(rawChar)) {
         if ( isalpha(int(rawChar)) ) {
-            cipheredChar = 'A' + char((toupper(int(rawChar)) + int(gamma[counter++ % gamma.length()])) % 26);
+            cipheredChar = 'A' + char(
+                ( toupper(int(rawChar)) + int(gamma[counter++ % gamma.length()]) ) % CIPHER_STEP
+            );
             result += cipheredChar;
         }
     }
