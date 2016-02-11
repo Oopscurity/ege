@@ -3,7 +3,7 @@
 #include <string>
 #include <bitset>
 #include <unordered_map>
-#include <climits>
+#include <climits> // CHAR_BIT
 
 template<class T>
 std::string integralToBinaryString(T byte) {
@@ -11,7 +11,7 @@ std::string integralToBinaryString(T byte) {
     return bs.to_string();
 }
 
-template<class T>
+template<class T>  // to convert from bitsets with different size
 unsigned int octet_to_uint(T &bitset, int order) {
     unsigned int mask = 1;
     unsigned int result = 0;
@@ -27,25 +27,25 @@ unsigned int octet_to_uint(T &bitset, int order) {
 
 void clear(std::unordered_map<std::string, std::pair<std::string, int>> &data) {
     for (auto &elem: data) {
-        elem.second.first.clear();
+        elem.second.first.clear(); // clear strings with binary code
     }
 }
 
 void read(std::pair<std::string, int> &dest) {
     short byte;
-    int it = dest.second;
+    int it = dest.second; // not to be dependent from data you get
     while (it--) {
         std::cin >> byte;
         dest.first += integralToBinaryString(byte);
         if (it)
-            std::cin.ignore(1);
+            std::cin.ignore(1); // to parse dotted such as 192.168.1.1
     }
 }
 
 struct Packet {
-    std::bitset<32> src;
+    std::bitset<32> src; // IPv4
     std::bitset<32> dest;
-    std::bitset<24> time;
+    std::bitset<24> time; // hh:mm:ss
     Packet(std::string _src,
            std::string _dest,
            std::string _time) : src(_src), dest(_dest), time(_time) {}
@@ -66,13 +66,13 @@ int main() {
     std::unordered_map<
         std::string,
         std::pair<std::string, int>> data ({
-            {"time", std::pair<std::string, int>("", BYTES_PER_TIME) },
-            {"src", std::pair<std::string, int>("", BYTES_PER_IP) },
-            {"dest", std::pair<std::string, int>("", BYTES_PER_IP) } 
+            { head[0], std::pair<std::string, int>("", BYTES_PER_TIME) },
+            { head[1], std::pair<std::string, int>("", BYTES_PER_IP) },
+            { head[2], std::pair<std::string, int>("", BYTES_PER_IP) } 
     });
     for (int i = 0; i < N; ++i) {
         clear(data);
-        for (int j = 0; j < 3; ++j) {
+        for (int j = 0; j < data.size(); ++j) {
             read(data[ head[j] ]);
             std::cin.ignore(1);
         }
