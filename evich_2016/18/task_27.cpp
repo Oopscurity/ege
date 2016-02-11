@@ -12,7 +12,7 @@ std::string integralToBinaryString(T byte) {
 }
 
 template<class T>  // to convert from bitsets with different size
-unsigned int octet_to_uint(T &bitset, int order) {
+unsigned int octetToUint(T &bitset, int order) {
     unsigned int mask = 1;
     unsigned int result = 0;
 
@@ -37,18 +37,17 @@ void read(std::pair<std::string, int> &dest) {
     while (it--) {
         std::cin >> byte;
         dest.first += integralToBinaryString(byte);
-        if (it)
-            std::cin.ignore(1); // to parse dotted such as 192.168.1.1
+        if (it) std::cin.ignore(1); // to parse dotted such as 192.168.1.1
     }
 }
 
 struct Packet {
+    std::bitset<24> time; // hh:mm:ss
     std::bitset<32> src; // IPv4
     std::bitset<32> dest;
-    std::bitset<24> time; // hh:mm:ss
-    Packet(std::string _src,
-           std::string _dest,
-           std::string _time) : src(_src), dest(_dest), time(_time) {}
+    Packet(std::string _time,
+           std::string _src,
+           std::string _dest) : time(_time), src(_src), dest(_dest) {}
 };
 
 int main() {
@@ -76,7 +75,7 @@ int main() {
             read(data[ head[j] ]);
             std::cin.ignore(1);
         }
-        packets.push_back({ Packet(data["src"].first, data["dest"].first, data["time"].first) });
+        packets.push_back({ Packet(data[ head[0] ].first, data[ head[1] ].first, data[ head[2] ].first) });
     }
 
     clear(data);
@@ -100,17 +99,17 @@ int main() {
             )
         {
             for (int i = 0; i < BYTES_PER_TIME; ++i) {
-                std::cout << octet_to_uint(packet.time, i);
+                std::cout << octetToUint(packet.time, i);
                 if (i != BYTES_PER_TIME - 1) std::cout << ':';
             }
             std::cout << ' ';
             for (int i = 0; i < BYTES_PER_IP; ++i) {
-                std::cout << octet_to_uint(packet.src, i);
+                std::cout << octetToUint(packet.src, i);
                 if (i != BYTES_PER_IP - 1) std::cout << '.';
             }
             std::cout << ' ';
             for (int i = 0; i < BYTES_PER_IP; ++i) {
-                std::cout << octet_to_uint(packet.dest, i);
+                std::cout << octetToUint(packet.dest, i);
                 if (i != BYTES_PER_IP - 1) std::cout << '.';
             }
             std::cout << '\n';
