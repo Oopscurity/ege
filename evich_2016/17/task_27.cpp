@@ -1,89 +1,112 @@
-// #include <iostream>
-// #include <bitset>
-// #include <climits>
-// #include <string>
-// #include <sstream>
-// #include <set>
+#include <iostream>
+#include <string>
+#include <set>
+#include <climits> // CHAR_BIT
+#include <bitset>
+#include <sstream>
 
-// template <typename T>
-// std::string integralToBinaryString(T _byte) {
-// 	std::bitset<CHAR_BIT> bs(_byte);
-// 	return bs.to_string();
-// }
+template <typename T>
+std::string integralToBinaryString(T& _data) {
+	std::bitset<CHAR_BIT> bitset(_data);
+	return bitset.to_string();
+}
 
-// void read(std::string &_dest, int _bytes) {
-// 	unsigned short byte;
-// 	for (int i = 0; i < _bytes; ++i) {
-// 		std::cin >> byte;
-// 		if (i) std::cin.ignore(1);
-// 		_dest += integralToBinaryString(byte);
-// 	}
-// }
+template <typename T>
+unsigned long long bitsetToUll(T& _data) {
+	unsigned long long result = 0;
+	unsigned long long mask = 1;
+	for (int i = 0; i < _data.size(); ++i) {
+		if (_data.test(i)) {
+			result |= mask;
+		}
+		mask <<= 1;
+	}
+	return result;
+}
 
-// void readIPTillSpace(std::string &_dest, int _bytes) {
-// 	std::getline(std::cin, _dest, ' ');
-// 	unsigned short byte;
-// 	std::istringstream buf(_dest);
-// 	for (int i = 0; i < _bytes; ++i) {
-// 		if (buf.eof()) byte = 0;
-// 		else {
-// 			buf >> byte;
-// 			if (i) buf.ignore(1);
-// 		}
-// 		_dest += integralToBinaryString(byte);
-// 	}
-// }
+template <typename T>
+int findFirstSet(T& data) {
+	int bit = -1;
+	for (int i = 0; i < data.size(); ++i) {
+		if (data.test(i)) {
+			bit = i;
+			break;
+		}
+	}
+	return bit;
+}
 
-// int findFirstSetBit(std::string &target) {
-// 	std::bitset<32> targetBinary(target);
-// 	int bit = 0;
-// 	while (!targetBinary.test(bit)) { ++bit; }
-// 	return bit;
-// }
+template <typename T>
+T& setTill(T& data, int end, bool value = true) {
+	end = (end >= data.size()) ? data.size() : end; 
+	for (int i = 0; i <= end; ++i) {
+		data[i] = value;
+	}
+	return data;
+}
 
-// int main() {
-// 	const int BYTES_PER_IP = 4,
-// 			  SURNAME_SIZE_LIMIT = 30;
-// 	int N; // by condition: the number of users
-// 	std::cin >> N;
+void readIP(std::string& _dest, const char _delim = ' ', const int _bytes = 4) {
+	std::getline(std::cin, _dest, _delim);
+	std::istringstream buf(_dest);
+	_dest.clear();
+	unsigned short byte;
+	for (int i = _bytes; i > 0; --i) {
+		if (buf.eof()) byte = 0;
+		else {
+			buf >> byte;
+			if (i != 1) buf.ignore(1);
+		}
+		_dest += integralToBinaryString(byte);
+	}
+}
 
-// 	std::string reference,
-// 				net;
-// 	readIPTillSpace(reference, BYTES_PER_IP);
-// 	readIPTillSpace(net, BYTES_PER_IP);
+std::string readIP(const char _delim = ' ', const int _bytes = 4) {
+	std::string result;
+	std::getline(std::cin, result, _delim);
+	std::istringstream buf(result);
+	result.clear();
+	unsigned short byte;
+	for (int i = _bytes; i > 0; --i) {
+		if (buf.eof()) byte = 0;
+		else {
+			buf >> byte;
+			if (i != 1) buf.ignore(1);
+		}
+		result += integralToBinaryString(byte);
+	}
+	return result;
+}
 
-// 	int firstSetBit = findFirstSetBit(reference);
-// 	std::bitset<BYTES_PER_IP * 8> networkBinary(net);
+int main() {
+	const int BYTES_PER_IP = 4,
+			  SURNAME_SIZE_LIMIT = 30;
 
-// 	for (int i = 0; i < firstSetBit; ++i) {
-// 		networkBinary[i] = false;
-// 	}
-// 	unsigned long long min = networkBinary.to_ullong();
-// 	for (int i = 0; i < firstSetBit; ++i) {
-// 		networkBinary[i] = true;
-// 	}
-// 	unsigned long long max = networkBinary.to_ullong();
+	std::bitset<BYTES_PER_IP * 8> network(readIP());
+	std::bitset<BYTES_PER_IP * 8> reference(readIP('\n'));
+	
+	int bit = findFirstSet(reference);
+	unsigned long long min = bitsetToUll( setTill(network, bit, false) );
+	unsigned long long max = bitsetToUll( setTill(network, bit) );
 
-// 	std::cout << reference << ' ' << net << std::endl;
-//  	std::cout << min << ' ' << max << std::endl; 
+	int N; // by condition: the number of users
+	std::cin >> N;
 
-// 	std::string currentUsername,
-// 				currentIP;
-// 	unsigned long long currentIPNumber;
-// 	std::set<std::string> usernames;
-// 	for (int i = 0; i < N; ++i) {
-// 		std::cin.ignore(SURNAME_SIZE_LIMIT, ' ');
-// 		std::cin >> currentUsername;
-		
-// 		read(currentIP, BYTES_PER_IP);
-// 		std::bitset<BYTES_PER_IP * 8> current(currentIP);
-// 		currentIPNumber = current.to_ullong();
-// 		if ((currentIPNumber >= min) && (currentIPNumber <= max)) {
-// 			usernames.insert(currentUsername);
-// 		}
-// 	}
+	unsigned long long currentUll;
+	std::string login, currentIP;
+	std::set<std::string> users;
+	for (int i = 0; i < N; ++i) {
+		std::cin.ignore(SURNAME_SIZE_LIMIT, ' ');
+		std::cin >> login;
+		readIP(currentIP, '\n');
+		std::bitset<BYTES_PER_IP * 8> currentBin(currentIP);
+		currentUll = bitsetToUll(currentBin);
+		if (( currentUll >= min ) && ( currentUll <= max )) {
+			users.insert(login);
+		}
+	}
 
-
-
-// 	return 0;
-// }
+	for (auto it = users.begin(); it != users.end(); ++it) {
+		std::cout << *it << '\n';
+	}
+	return 0;
+}
