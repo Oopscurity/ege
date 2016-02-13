@@ -25,10 +25,10 @@ unsigned long long bitsetToUll(T& _data) {
 }
 
 template <typename T>
-int findFirstSet(T& data) {
+int findFirstSet(T& _data) {
     int bit = -1;
-    for (int i = 0; i < data.size(); ++i) {
-        if (data.test(i)) {
+    for (int i = 0; i < _data.size(); ++i) {
+        if (_data.test(i)) {
             bit = i;
             break;
         }
@@ -37,12 +37,12 @@ int findFirstSet(T& data) {
 }
 
 template <typename T>
-T& setTill(T& data, int end, bool value = true) {
-    end = (end >= data.size()) ? data.size() : end; 
-    for (int i = 0; i <= end; ++i) {
-        data[i] = value;
+T& setTill(T& _data, int _end, bool _value = true) {
+    _end = (_end >= _data.size()) ? _data.size() : _end; 
+    for (int i = 0; i <= _end; ++i) {
+        _data[i] = _value;
     }
-    return data;
+    return _data;
 }
 
 void readIP(std::string& _dest, const char _delim = ' ', const int _bytes = 4) {
