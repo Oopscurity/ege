@@ -27,11 +27,11 @@ int main() {
             max = current;
         }
     }
-    int R;
+    long R;
     std::cin >> R;
     // std::cout << "max: " << max << '\t' << "maxDivSelf: " << maxDivSelf << '\t' << "maxDivFirst: " << maxDivFirst << '\t' << "maxDivSecond: " << maxDivSecond << '\n';
 
-    int multiply = 0;
+    long multiply = 0;
     if ( maxDivSelf || (maxDivFirst && maxDivSecond) ) {
         multiply = (max * maxDivSelf > maxDivFirst * maxDivSecond)
         ? max * maxDivSelf : maxDivFirst * maxDivSecond;
